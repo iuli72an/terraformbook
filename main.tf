@@ -14,7 +14,7 @@ resource "aws_instance" "my-example" {
     user_data = <<-EOF
                 #!/bin/bash
                 echo "Hello, World" > index.html
-                nohup busybox httpd -f -p 8080 &
+                nohup busybox httpd -f -p ${var.server_port} &
                 EOF
 
     user_data_replace_on_change = true
