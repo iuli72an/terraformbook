@@ -4,9 +4,9 @@ This code is used for practicing the chapters described in the book Terraform Up
 
 ## GitHub Repository
 
-Since the book it was writen in 2022, some changes have been made in the way Terraform is calling the AWS API, as well as other stuff that has been tested in July 2025.
+Since the book was writen in 2022, some changes have been made in the way Terraform is calling the AWS API, as well as other stuff that has been tested in July 2025.
 
-The (GitHub)[https://github.com/iuli72an/terraformbook] repository has been updated with latest changes, as it can be seen in the commit messages.
+The [GitHub](https://github.com/iuli72an/terraformbook) repository has been updated with latest changes, as it can be seen in the commit messages.
 
 ## Terraform setup
 
