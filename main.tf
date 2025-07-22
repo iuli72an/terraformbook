@@ -58,6 +58,7 @@ resource "aws_autoscaling_group" "my-example-asg" {
 
     min_size            = 2
     max_size            = 10
+    desired_capacity    = 4
     tag {
         key = "Name"
         value = "terraform-asg-example"
