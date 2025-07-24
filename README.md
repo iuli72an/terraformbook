@@ -1,5 +1,7 @@
 # Terraform Up & Running - Practice code
 
+![Terraform](https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg)
+
 This code is used for practicing the chapters described in the book Terraform Up & Running by Yevgeniy Brikman.
 
 ## GitHub Repository
