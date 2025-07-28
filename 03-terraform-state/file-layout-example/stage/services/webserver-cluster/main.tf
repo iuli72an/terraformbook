@@ -11,11 +11,6 @@ data "aws_subnets" "default" {
         values = [data.aws_vpc.default.id]
     }
 }
-variable "server_port" {
-    description     = "The port the server will use for HTTP requests"
-    type            = number
-    default         = 8080
-}
 
 resource "aws_launch_template" "my-example-lt" {
     name_prefix                 = "my-example-template-"
@@ -63,7 +58,7 @@ resource "aws_autoscaling_group" "my-example-asg" {
         key = "Name"
         value = "terraform-asg-example"
         propagate_at_launch = true
-}
+    }
 }
 
 resource "aws_lb" "my-lb-example" {
@@ -149,9 +144,4 @@ resource "aws_security_group" "instance" {
         protocol    = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
-}
-
-output "alb_dns_name" {
-    value       = aws_lb.my-lb-example.dns_name
-    description = "The domain name of the load balancer"
 }
