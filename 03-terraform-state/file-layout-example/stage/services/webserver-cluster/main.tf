@@ -12,6 +12,14 @@ data "aws_subnets" "default" {
     }
 }
 
+data "terraform_remote_state" "db" {
+    backend = "s3"
+    config = {
+      bucket = "terraform-up-and-running-state-iulian-devops"
+      key = "stage/data-stores/mysql/terraform.tfstate"
+      region = "eu-north-1"
+    }
+}
 resource "aws_launch_template" "my-example-lt" {
     name_prefix                 = "my-example-template-"
     image_id                    = "ami-042b4708b1d05f512"
@@ -32,12 +40,11 @@ resource "aws_launch_template" "my-example-lt" {
         }
   }
 
-    user_data = base64encode(<<-EOF
-                #!/bin/bash
-                echo "Hello, World" > index.html
-                nohup busybox httpd -f -p ${var.server_port} &
-                EOF
-    )
+    user_data = base64encode(templatefile("user-data.sh", {
+        server_port = var.server_port
+        db_address  = data.terraform_remote_state.db.outputs.address
+        db_port     = data.terraform_remote_state.db.outputs.port
+    }))
 }
 
 resource "aws_autoscaling_group" "my-example-asg" {
@@ -53,7 +60,7 @@ resource "aws_autoscaling_group" "my-example-asg" {
 
     min_size            = 2
     max_size            = 10
-    desired_capacity    = 4
+    desired_capacity    = 2
     tag {
         key = "Name"
         value = "terraform-asg-example"
