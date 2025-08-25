@@ -20,6 +20,12 @@ data "terraform_remote_state" "db" {
       region = "eu-north-1"
     }
 }
+
+locals {
+  db_address = try(data.terraform_remote_state.db.outputs.address, null)
+  db_port    = try(data.terraform_remote_state.db.outputs.port, null)
+}
+
 resource "aws_launch_template" "my-example-lt" {
     name_prefix                 = "my-example-template-"
     image_id                    = "ami-042b4708b1d05f512"
@@ -45,6 +51,13 @@ resource "aws_launch_template" "my-example-lt" {
         db_address  = data.terraform_remote_state.db.outputs.address
         db_port     = data.terraform_remote_state.db.outputs.port
     }))
+
+    lifecycle {
+        precondition {
+            condition     = local.db_address != null && local.db_port != null
+            error_message = "Create the required mysql data-store AWS resources first: db_address and/or db_port not found in the 'db' remote state."
+        }
+    }
 }
 
 resource "aws_autoscaling_group" "my-example-asg" {
